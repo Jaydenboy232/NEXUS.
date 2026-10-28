@@ -3843,31 +3843,6 @@ end
 -- ----------------------------------
 
 
--- NEXUS: FIX MACRO SCROLLING
-
-macroList.ScrollingDirection = Enum.ScrollingDirection.Y
-macroList.AutomaticCanvasSize = Enum.AutomaticSize.Y
-macroList.CanvasSize = UDim2.new(0, 0, 0, 0)
-macroList.ScrollBarThickness = 6
-macroList.ScrollBarImageColor3 = Color3.fromRGB(175, 140, 255)
-macroList.Active = true
-
-local macroLayout = macroList:FindFirstChildOfClass("UIListLayout")
-
-if macroLayout then
-    macroLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        macroList.CanvasSize = UDim2.new(
-            0, 0, 0,
-            macroLayout.AbsoluteContentSize.Y + 12
-        )
-    end)
-end
-
-print("NEXUS: Macro scrolling fixed!")
-
--- noooooo my hotspoott nooooo
-
--- yay my wifi works again
 
 
 -- NEXUS: CREATOR CREDITS (SAFE VERSION)
