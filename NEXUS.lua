@@ -1,4 +1,3 @@
-﻿
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
@@ -1905,8 +1904,11 @@ list.BackgroundTransparency = 1
 list.BorderSizePixel = 0
 list.ScrollBarThickness = 4
 list.ScrollBarImageColor3 = Color3.fromRGB(145, 100, 235)
-list.AutomaticCanvasSize = Enum.AutomaticSize.Y
+list.AutomaticCanvasSize = Enum.AutomaticSize.None
 list.CanvasSize = UDim2.new(0, 0, 0, 0)
+list.ScrollingDirection = Enum.ScrollingDirection.Y
+list.ScrollingEnabled = true
+list.Active = true
 list.Parent = page
 
 local layout = Instance.new("UIListLayout")
@@ -1918,6 +1920,21 @@ local padding = Instance.new("UIPadding")
 padding.PaddingTop = UDim.new(0, 4)
 padding.PaddingBottom = UDim.new(0, 5)
 padding.Parent = list
+local function updateExploitsCanvas()
+    list.CanvasSize = UDim2.new(
+        0, 0,
+        0, layout.AbsoluteContentSize.Y
+            + padding.PaddingTop.Offset
+            + padding.PaddingBottom.Offset
+            + 6
+    )
+end
+
+layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(
+    updateExploitsCanvas
+)
+
+task.defer(updateExploitsCanvas)
 
 -- Infinite Jump toggle card
 local row = Instance.new("Frame")
@@ -2333,9 +2350,10 @@ task.spawn(function()
             valueLabel.Parent = card
 
             local track = Instance.new("Frame")
+            track.Name = "SliderTrack"
             track.Position = UDim2.new(0, 12, 0, 43)
             track.Size = UDim2.new(1, -24, 0, 8)
-            track.BackgroundColor3 = Color3.fromRGB(67, 64, 79)
+          track.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
             track.BorderSizePixel = 0
             track.Parent = card
 
@@ -3394,10 +3412,11 @@ task.spawn(function()
         scroll.BorderSizePixel = 0
         scroll.ScrollBarThickness = 5
         scroll.ScrollBarImageColor3 = Color3.fromRGB(174, 105, 255)
-        scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
-        scroll.CanvasSize = UDim2.new(0, 0, 0, 0)
-        scroll.ScrollingDirection = Enum.ScrollingDirection.Y
-        scroll.Active = true
+        scroll.AutomaticCanvasSize = Enum.AutomaticSize.None
+scroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+scroll.ScrollingDirection = Enum.ScrollingDirection.Y
+scroll.ScrollingEnabled = true
+scroll.Active = true
         scroll.Parent = page
 
         local layout = Instance.new("UIListLayout", scroll)
@@ -3409,6 +3428,20 @@ task.spawn(function()
         padding.PaddingBottom = UDim.new(0, 12)
         padding.PaddingLeft = UDim.new(0, 2)
         padding.PaddingRight = UDim.new(0, 5)
+		local function updateMacroCanvas()
+    scroll.CanvasSize = UDim2.new(
+        0, 0,
+        0, layout.AbsoluteContentSize.Y
+            + padding.PaddingTop.Offset
+            + padding.PaddingBottom.Offset
+    )
+end
+
+layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(
+    updateMacroCanvas
+)
+
+task.defer(updateMacroCanvas)
 
         local function makeCard(name, height, order)
             local card = Instance.new("Frame")
@@ -3897,3 +3930,5 @@ task.spawn(function()
         warn("NEXUS Credits error: " .. tostring(err))
     end
 end)
+
+-- big boooooooommm boooooom
